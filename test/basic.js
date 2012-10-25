@@ -83,7 +83,8 @@ describe('Basic Logging', function () {
       app.on('log:store', function () {
         return {
           add: function (obj) {
-            assert.equal(obj.type, 'name: Brian Link');
+            assert.equal(obj.type, 'msg');
+            assert.equal(obj.msg, 'name: Brian Link');
             done();
           }
         };

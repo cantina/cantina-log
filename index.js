@@ -41,8 +41,8 @@ function log (type, data) {
 
   // Support printf style string formatting instead of jog type/data style.
   if (args.length > 2 || !data.constructor || data.constructor !== Object) {
-    type = app.utils.format.apply(null, args);
-    data = {};
+    type = 'msg';
+    data = {msg: app.utils.format.apply(null, args)};
   }
 
   // Optionally, find caller from stack.
