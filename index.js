@@ -15,7 +15,10 @@ app.conf.add({
 });
 
 // Create bunyan logger. Defaults to StdStore but allows app to override.
-var store = app.invoke('log:store');
+var store;
+if (app.listeners('log:store').length) {
+  store = app.invoke('log:store');
+}
 app.logger = jog(store || new jog.StdStore());
 
 /**
@@ -135,7 +138,6 @@ app.log.restoreConsole = function () {
  */
 app.on('ready', function () {
   app.on('log:serialize', function (data) {
-
     // Serialize req objects.
     if (data.req && data.req.url && data.req.headers) {
       var req = data.req;
