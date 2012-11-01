@@ -14,7 +14,8 @@
   "author": "Brian Link <cpsubrian@gmail.com>",
   "license": "MIT",
   "dependencies": {
-    "jog2": "*"
+    "jog": "*",
+    "jog-stdstore": "*"
   },
   "devDependencies": {
     "cantina": "git+ssh://git@github.com:cantina/cantina.git#2.x",

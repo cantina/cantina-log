@@ -1,5 +1,6 @@
 var app = require('cantina')
-  , jog = require('jog2')
+  , jog = require('jog')
+  , StdStore = require('jog-stdstore')
   , url = require('url')
   , http = require('http');
 
@@ -19,7 +20,7 @@ var store;
 if (app.listeners('log:store').length) {
   store = app.invoke('log:store');
 }
-app.logger = jog(store || new jog.StdStore());
+app.logger = jog(store || new StdStore());
 
 /**
  * Logging that optionally includes default meta-data such as stack-trace info.
