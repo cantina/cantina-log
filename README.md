@@ -130,11 +130,12 @@ app.on('log:serialize', function (data) {
 CLI
 ---
 
-Installing **jog2** globally gives you access to jog's CLI. This is useful for
-filtering and formatting log messages when you need to view them from the
-command-line.
+Now that your log output is in nice, parseable JSON, you may want to be 
+able to read it on the command-line in a more human-friendly format.
+[Joli](http://github.com/cpsubrian/node-joli) is a CLI that helps you
+format newline-separated JSON object (like the ones cantina-log outputs).
 
-Please see **jog's** README for full documentation.
+Please see **joli's** README for full documentation.
 
 - - -
 
