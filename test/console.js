@@ -13,9 +13,9 @@ describe('console', function () {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
+          app.log.restoreConsole();
           assert.equal(obj.level, 'info');
           assert.equal(obj.type, 'console.log');
-          app.log.restoreConsole();
           done();
         }
       };
@@ -34,9 +34,9 @@ describe('console', function () {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
+          app.log.restoreConsole();
           assert.equal(obj.level, 'info');
           assert.equal(obj.type, 'console.info');
-          app.log.restoreConsole();
           done();
         }
       };
@@ -55,9 +55,9 @@ describe('console', function () {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
+          app.log.restoreConsole();
           assert.equal(obj.level, 'warn');
           assert.equal(obj.type, 'console.warn');
-          app.log.restoreConsole();
           done();
         }
       };
@@ -76,9 +76,9 @@ describe('console', function () {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
+          app.log.restoreConsole();
           assert.equal(obj.level, 'error');
           assert.equal(obj.type, 'console.error');
-          app.log.restoreConsole();
           done();
         }
       };
@@ -97,10 +97,10 @@ describe('console', function () {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
+          app.log.restoreConsole();
           assert.equal(obj.level, 'debug');
           assert.equal(obj.type, 'dump');
-          assert.equal(obj.foo, 'bar');
-          app.log.restoreConsole();
+          assert.deepEqual(obj.data, {foo: 'bar'});
           done();
         }
       };
@@ -112,6 +112,34 @@ describe('console', function () {
     app.init(function (err) {
       assert.ifError(err);
       console.dir({foo: 'bar'});
+    });
+  });
+
+  it('can log data mithout modifying it by reference', function (done) {
+    app.on('log:store', function testStore () {
+      return {
+        add: function (obj) {
+          app.log.restoreConsole();
+          assert.equal(obj.level, 'info');
+          assert.equal(obj.type, 'dump');
+          assert.equal(obj.data.name, 'Brian');
+        }
+      };
+    });
+
+    require('../');
+    app.log.replaceConsole();
+
+    app.init(function (err) {
+      assert.ifError(err);
+      var data = {
+        name: 'Brian',
+        type: 'person',
+        color: 'blue'
+      };
+      console.log(data);
+      assert.equal(data.type, 'person');
+      done();
     });
   });
 });
