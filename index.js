@@ -59,7 +59,7 @@ function log (type, data) {
       break;
     }
     data.src = {
-      file: call.getFileName().replace(app.root + '/', ''),
+      file: call.getFileName() ? call.getFileName().replace(app.root + '/', '') : '',
       line: call.getLineNumber()
     };
   }
