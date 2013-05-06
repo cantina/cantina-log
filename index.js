@@ -2,7 +2,8 @@ var app = require('cantina')
   , jog = require('jog')
   , StdStore = require('jog-stdstore')
   , url = require('url')
-  , http = require('http');
+  , http = require('http')
+  , clone = require('clone');
 
 // Default conf.
 app.conf.add({
@@ -15,7 +16,7 @@ app.conf.add({
   }
 });
 
-// Create bunyan logger. Defaults to StdStore but allows app to override.
+// Create jog logger. Defaults to StdStore but allows app to override.
 var store;
 if (app.listeners('log:store').length) {
   store = app.invoke('log:store');
@@ -34,11 +35,13 @@ function log (type, data) {
     , call;
 
   if (typeof type !== 'string') {
-    data = type;
+    data = {
+      data: type
+    };
     type = 'dump';
   }
 
-  data = data || {};
+  data = clone(data) || {};
 
   // Support printf style string formatting instead of jog type/data style.
   if (args.length > 2 || !data.constructor || data.constructor !== Object) {
