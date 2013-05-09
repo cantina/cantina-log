@@ -2,8 +2,7 @@ var app = require('cantina')
   , jog = require('jog')
   , StdStore = require('jog-stdstore')
   , url = require('url')
-  , http = require('http')
-  , clone = require('clone');
+  , http = require('http');
 
 // Default conf.
 app.conf.add({
@@ -41,7 +40,7 @@ function log (type, data) {
     type = 'dump';
   }
 
-  data = clone(data) || {};
+  data || (data = {});
 
   // Support printf style string formatting instead of jog type/data style.
   if (args.length > 2 || !data.constructor || data.constructor !== Object) {

@@ -115,7 +115,7 @@ describe('console', function () {
     });
   });
 
-  it('can log data mithout modifying it by reference', function (done) {
+  it('can log data without modifying it by reference', function (done) {
     app.on('log:store', function testStore () {
       return {
         add: function (obj) {
