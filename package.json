@@ -15,8 +15,7 @@
   "license": "MIT",
   "dependencies": {
     "jog": "*",
-    "jog-stdstore": "*",
-    "clone": "~0.1.6"
+    "jog-stdstore": "*"
   },
   "devDependencies": {
     "cantina": "git+ssh://git@github.com:cantina/cantina.git#2.x",
