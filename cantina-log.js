@@ -2,7 +2,8 @@ var app = require('cantina')
   , jog = require('jog')
   , StdStore = require('jog-stdstore')
   , url = require('url')
-  , http = require('http');
+  , http = require('http')
+  , format = require('util').format;
 
 // Default conf.
 app.conf.add({
@@ -16,11 +17,8 @@ app.conf.add({
 });
 
 // Create jog logger. Defaults to StdStore but allows app to override.
-var store;
-if (app.listeners('log:store').length) {
-  store = app.invoke('log:store');
-}
-app.logger = jog(store || new StdStore());
+app.loggerStore = app.loggerStore || new StdStore();
+app.logger = jog(app.loggerStore);
 
 /**
  * Logging that optionally includes default meta-data such as stack-trace info.
@@ -45,7 +43,9 @@ function log (type, data) {
   // Support printf style string formatting instead of jog type/data style.
   if (args.length > 2 || !data.constructor || data.constructor !== Object) {
     type = 'msg';
-    data = {msg: app.utils.format.apply(null, args)};
+    data = {
+      msg: format.apply(null, args)
+    };
   }
 
   // Optionally, find caller from stack.
@@ -64,7 +64,7 @@ function log (type, data) {
   }
 
   // Run data serializers.
-  app.series('log:serialize', data, function (err) {
+  app.hook('log:serialize').run(data, function (err) {
     if (err) return app.logger.error('log serialize', data);
     app.logger[self.level](type, data);
   });
@@ -78,12 +78,11 @@ app.log.warn = log.bind({level: 'warn'});
 app.log.error = log.bind({level: 'error'});
 
 /**
- * Add middleware that logs all requests.
+ * Add middleware that logs all requests. (If cantina-web was required).
  */
 if (app.middleware && app.conf.get('log:req:enable')) {
-  app.middleware.add(function logRequest (req, res, next) {
-    req.parsed = url.parse(req.url);
-    if (!req.parsed.pathname.match(app.conf.get('log:req:exclude'))) {
+  app.middleware.add(-700, function logRequest (req, res, next) {
+    if (!req.href.pathname.match(app.conf.get('log:req:exclude'))) {
       var orig = res.end;
       res.end = function() {
         app.log('request', {
@@ -139,28 +138,25 @@ app.log.restoreConsole = function () {
 /**
  * Default serialization.
  */
-app.on('ready', function () {
-  app.on('log:serialize', function (data) {
-    // Serialize req objects.
-    if (data.req && data.req.url && data.req.headers) {
-      var req = data.req;
-      var parsed = req.parsed || url.parse(req.url);
-      data.req = {
-        method: req.method,
-        url: {
-          href: parsed.href,
-          protocol: parsed.protocol,
-          host: parsed.host,
-          pathname: parsed.pathname,
-          port: parsed.port,
-          query: parsed.query,
-          hash: parsed.hash
-        },
-        headers: req.headers
-      };
-    }
-
-  });
+app.hook('log:serialize').add(function (data, next) {
+  // Serialize req objects.
+  if (data.req && data.req.href) {
+    var req = data.req;
+    data.req = {
+      method: req.method,
+      url: {
+        href: req.href.href,
+        protocol: req.href.protocol,
+        host: req.href.host,
+        pathname: req.href.pathname,
+        port: req.href.port,
+        query: req.href.query,
+        hash: req.href.hash
+      },
+      headers: req.headers
+    };
+  }
+  next();
 });
 
 /**

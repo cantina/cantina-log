@@ -2,7 +2,20 @@ describe('request', function () {
   var app;
 
   beforeEach(function (done) {
-    app = createTestApp({}, done);
+    app = require('cantina');
+    app.boot(function (err) {
+      assert.ifError(err);
+      app.conf.add({
+        web: {
+          server: {
+            listen: false
+          },
+          static: false,
+          views: false
+        }
+      });
+      done();
+    });
   });
 
   afterEach(function (done) {
@@ -10,21 +23,16 @@ describe('request', function () {
   });
 
   it('can log requests', function (done) {
-    app.on('log:store', function testStore () {
-      return {
-        add: function (obj) {
-          assert.equal(obj.level, 'info');
-          assert.equal(obj.type, 'request');
-          assert.equal(obj.req.url.pathname, '/hello');
-          done();
-        }
-      };
-    });
+    app.loggerStore = {
+      add: function (obj) {
+        assert.equal(obj.level, 'info');
+        assert.equal(obj.type, 'request');
+        assert.equal(obj.req.url.pathname, '/hello');
+        done();
+      }
+    };
 
-    app.conf.set('http:listen', false);
-
-    require(app.plugins.http);
-    require(app.plugins.middleware);
+    require('cantina-web');
     require('../');
 
     app.middleware.get('/favicon.ico', function (req, res) {
@@ -36,14 +44,13 @@ describe('request', function () {
       res.end('world');
     });
 
-    app.init(function (err) {
+    app.start(function (err) {
       assert.ifError(err);
-      request(app.http).get('/favicon.ico').end(function (err, res) {
-        request(app.http).get('/hello').end(function (err, res) {
+      request(app.server).get('/favicon.ico').end(function (err, res) {
+        request(app.server).get('/hello').end(function (err, res) {
           assert.ifError(err);
         });
       });
     });
   });
-
 });

@@ -2,7 +2,8 @@ describe('serialize', function () {
   var app;
 
   beforeEach(function (done) {
-    app = createTestApp({}, done);
+    app = require('cantina');
+    app.boot(done);
   });
 
   afterEach(function (done) {
@@ -10,22 +11,21 @@ describe('serialize', function () {
   });
 
   it('can serialize', function (done) {
-    app.on('log:store', function testStore () {
-      return {
-        add: function (obj) {
-          assert.equal(obj.foo, 'baz');
-          done();
-        }
-      };
-    });
+    app.loggerStore = {
+      add: function (obj) {
+        assert.equal(obj.foo, 'baz');
+        done();
+      }
+    };
 
-    app.on('log:serialize', function (data) {
+    app.hook('log:serialize').add(function (data, next) {
       data.foo = data.foo.bar;
+      next();
     });
 
     require('../');
 
-    app.init(function (err) {
+    app.start(function (err) {
       assert.ifError(err);
       app.log('serialize', {foo: {bar: 'baz'}});
     });
