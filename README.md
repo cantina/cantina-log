@@ -13,18 +13,14 @@ Usage
 ```js
 var app = require('cantina');
 
-app.load(function (err) {
-
-  // Load basic core plugins.
-  require(app.plugins.http);
-  require(app.plugins.middleware);
+app.boot(function (err) {
 
   // Load the logging plugin.
   require('cantina-log');
 
   // Load the rest of your plugins.
 
-  app.init();
+  app.start();
 });
 ```
 
@@ -90,20 +86,18 @@ custom you can tell the app like so:
 var app = require('cantina')
   , jog = require('jog2');
 
-app.load(function (err) {
+app.boot(function (err) {
   // Pre-log app setup.
 
   // Specify your store.
-  app.on('log:store', function () {
-    return new jog.FileStore('/tmp/log');
-  });
+  app.loggerStore = new jog.FileStore('/tmp/log');
 
   // Load the logging plugin.
   require('cantina-log');
 
   // Load the rest of your plugins.
 
-  app.init();
+  app.start();
 });
 ```
 
@@ -115,7 +109,7 @@ You may find your self logging simliar kinds of application object, such as
 santize it for the logs.
 
 ```js
-app.on('log:serialize', function (data) {
+app.hook('log:serialize').add(function (data, next) {
   if (data.user) {
     var user = data.user;
     data.user = {
@@ -124,13 +118,14 @@ app.on('log:serialize', function (data) {
       // ... etc.
     };
   }
+  next();
 });
 ```
 
 CLI
 ---
 
-Now that your log output is in nice, parseable JSON, you may want to be 
+Now that your log output is in nice, parseable JSON, you may want to be
 able to read it on the command-line in a more human-friendly format.
 [Joli](http://github.com/cpsubrian/node-joli) is a CLI that helps you
 format newline-separated JSON object (like the ones cantina-log outputs).
