@@ -24,7 +24,7 @@ describe('Basic Logging', function () {
     it('logs with correct callsite', function (done) {
       app.loggerStore = {
         add: function (obj) {
-          assert.equal(obj.type, 'test');
+          assert.equal(obj.msg, 'test');
           assert.equal(obj.src.file, 'test/basic.js');
           assert.equal(obj.src.line, 38);
           done();
@@ -63,7 +63,7 @@ describe('Basic Logging', function () {
     it('logs with correct callsite', function (done) {
       app.loggerStore = {
         add: function (obj) {
-          assert.equal(obj.type, 'test');
+          assert.equal(obj.msg, 'test');
           assert.equal(obj.src, undefined);
           done();
         }
