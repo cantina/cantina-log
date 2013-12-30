@@ -37,6 +37,13 @@ function log (type, data) {
     };
     type = 'dump';
   }
+  // If single argument is a string, treat this as the log message
+  else if (args.length === 1 && typeof type === 'string') {
+    data = {
+      msg: type
+    };
+    type = 'msg';
+  }
 
   data || (data = {});
 

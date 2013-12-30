@@ -15,7 +15,7 @@ describe('console', function () {
       add: function (obj) {
         app.log.restoreConsole();
         assert.equal(obj.level, 'info');
-        assert.equal(obj.type, 'console.log');
+        assert.equal(obj.msg, 'console.log');
         done();
       }
     };
@@ -34,7 +34,7 @@ describe('console', function () {
       add: function (obj) {
         app.log.restoreConsole();
         assert.equal(obj.level, 'info');
-        assert.equal(obj.type, 'console.info');
+        assert.equal(obj.msg, 'console.info');
         done();
       }
     };
@@ -53,7 +53,7 @@ describe('console', function () {
       add: function (obj) {
         app.log.restoreConsole();
         assert.equal(obj.level, 'warn');
-        assert.equal(obj.type, 'console.warn');
+        assert.equal(obj.msg, 'console.warn');
         done();
       }
     };
@@ -72,7 +72,7 @@ describe('console', function () {
       add: function (obj) {
         app.log.restoreConsole();
         assert.equal(obj.level, 'error');
-        assert.equal(obj.type, 'console.error');
+        assert.equal(obj.msg, 'console.error');
         done();
       }
     };
