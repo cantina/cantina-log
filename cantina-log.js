@@ -70,6 +70,11 @@ function log (type, data) {
     };
   }
 
+  //Include the amino id if present
+  if (typeof app.amino !== 'undefined') {
+    data.amino_id = app.amino.id;
+  }
+
   // Run data serializers.
   app.hook('log:serialize').run(data, function (err) {
     if (err) return app.logger.error('log serialize', data);
