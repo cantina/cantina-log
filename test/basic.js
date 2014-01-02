@@ -110,5 +110,36 @@ describe('Basic Logging', function () {
         app.log('name: %s %s', 'Brian', 'Link');
       });
     });
+
+    it('logs data having a toJSON method', function (done) {
+      app.loggerStore = {
+        add: function (obj) {
+          obj = JSON.parse(JSON.stringify(obj));
+          assert.equal(obj.type, 'test data having toJSON');
+          assert.equal(obj.a, 'A');
+          assert.equal(obj.b, 'B');
+          assert.equal(obj.ab, 'AB');
+          assert(obj.timestamp);
+          done();
+        }
+      };
+
+      require('../');
+      var data = {
+        a: 'A',
+        b: 'B',
+        toJSON: function () {
+          return {
+            a: this.a,
+            b: this.b,
+            ab: this.a + this.b
+          }
+        }
+      }
+
+      app.start(function (err) {
+        app.log('test data having toJSON', data);
+      });
+    });
   });
 });
