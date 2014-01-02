@@ -55,6 +55,12 @@ function log (type, data) {
     };
   }
 
+  // If data has its own toJSON() method, call it now so that properties
+  // we add don't get lost, which they will if toJSON() is called later.
+  if ({}.hasOwnProperty.call(data, 'toJSON')) {
+    data = data.toJSON();
+  }
+
   // Optionally, find caller from stack.
   if (app.conf.get('log:trace')) {
     stack = getStackTrace(4);
