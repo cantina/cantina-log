@@ -1,7 +1,9 @@
 {
   "name": "cantina-log",
-  "version": "3.0.3",
-  "private": true,
+  "version": "4.0.0-dev",
+  "publishConfig": {
+    "registry": "https://npm-registry.terraeclipse.com"
+  },
   "description": "JSON logging for Cantina apps",
   "main": "cantina-log.js",
   "scripts": {
@@ -12,15 +14,17 @@
     "url": "git://github.com/cantina/cantina-log.git"
   },
   "author": "Brian Link <cpsubrian@gmail.com>",
-  "license": "MIT",
   "dependencies": {
     "jog": "~0.7.1",
     "jog-stdstore": "~0.0.2"
   },
+  "peerDependencies": {
+    "cantina": "~4.0.0"
+  },
   "devDependencies": {
-    "cantina": "cantina/cantina#3.x",
-    "cantina-web": "cantina/cantina-web#3.x",
-    "mocha": "~1.12.0",
-    "supertest": "~0.7.1"
+    "mocha": "*",
+    "supertest": "~0.7.1",
+    "cantina": "~4.0.0",
+    "cantina-web": "~4.0.0"
   }
 }
