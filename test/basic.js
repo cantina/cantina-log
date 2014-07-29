@@ -5,7 +5,7 @@ describe('Basic Logging', function () {
   describe('with tracing', function () {
 
     before(function (done) {
-      app = require('cantina');
+      app = require('cantina').createApp();
       app.boot(function (err) {
         assert.ifError(err);
         app.conf.add({
@@ -31,7 +31,7 @@ describe('Basic Logging', function () {
         }
       };
 
-      require('../');
+      app.require('../');
 
       app.start(function (err) {
         assert.ifError(err);
@@ -44,7 +44,7 @@ describe('Basic Logging', function () {
   describe('with no tracing', function () {
 
     beforeEach(function (done) {
-      app = require('cantina');
+      app = require('cantina').createApp();
       app.boot(function (err) {
         assert.ifError(err);
         app.conf.add({
@@ -69,7 +69,7 @@ describe('Basic Logging', function () {
         }
       };
 
-      require('../');
+      app.require('../');
 
       app.start(function (err) {
         assert.ifError(err);
@@ -88,7 +88,7 @@ describe('Basic Logging', function () {
         }
       };
 
-      require('../');
+      app.require('../');
 
       app.start(function (err) {
         app.log('test with data', {a: 'A', b: 'B'});
@@ -104,7 +104,7 @@ describe('Basic Logging', function () {
         }
       };
 
-      require('../');
+      app.require('../');
 
       app.start(function (err) {
         app.log('name: %s %s', 'Brian', 'Link');
@@ -124,7 +124,7 @@ describe('Basic Logging', function () {
         }
       };
 
-      require('../');
+      app.require('../');
       var data = {
         a: 'A',
         b: 'B',
@@ -133,9 +133,9 @@ describe('Basic Logging', function () {
             a: this.a,
             b: this.b,
             ab: this.a + this.b
-          }
+          };
         }
-      }
+      };
 
       app.start(function (err) {
         app.log('test data having toJSON', data);

@@ -2,7 +2,7 @@ describe('serialize', function () {
   var app;
 
   beforeEach(function (done) {
-    app = require('cantina');
+    app = require('cantina').createApp();
     app.boot(done);
   });
 
@@ -23,7 +23,7 @@ describe('serialize', function () {
       next();
     });
 
-    require('../');
+    app.require('../');
 
     app.start(function (err) {
       assert.ifError(err);

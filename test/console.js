@@ -2,7 +2,7 @@ describe('console', function () {
   var app;
 
   beforeEach(function (done) {
-    app = require('cantina');
+    app = require('cantina').createApp();
     app.boot(done);
   });
 
@@ -20,7 +20,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {
@@ -39,7 +39,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {
@@ -58,7 +58,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {
@@ -77,7 +77,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {
@@ -97,7 +97,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {
@@ -116,7 +116,7 @@ describe('console', function () {
       }
     };
 
-    require('../');
+    app.require('../');
     app.log.replaceConsole();
 
     app.start(function (err) {

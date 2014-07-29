@@ -2,7 +2,7 @@ describe('request', function () {
   var app;
 
   beforeEach(function (done) {
-    app = require('cantina');
+    app = require('cantina').createApp();
     app.boot(function (err) {
       assert.ifError(err);
       app.conf.add({
@@ -32,8 +32,8 @@ describe('request', function () {
       }
     };
 
-    require('cantina-web');
-    require('../');
+    app.require('cantina-web');
+    app.require('../');
 
     app.middleware.get('/favicon.ico', function (req, res) {
       res.end('this would be the favicon');
