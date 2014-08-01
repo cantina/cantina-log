@@ -11,12 +11,12 @@ Usage
 **Setting up your app:**
 
 ```js
-var app = require('cantina');
+var app = require('cantina').createApp();
 
 app.boot(function (err) {
 
   // Load the logging plugin.
-  require('cantina-log');
+  app.require('cantina-log');
 
   // Load the rest of your plugins.
 
@@ -83,7 +83,7 @@ and stderr. If you prefer to use a `FileStore`, `RedisStore`, or something
 custom you can tell the app like so:
 
 ```js
-var app = require('cantina')
+var app = require('cantina').createApp()
   , jog = require('jog2');
 
 app.boot(function (err) {
@@ -93,7 +93,7 @@ app.boot(function (err) {
   app.loggerStore = new jog.FileStore('/tmp/log');
 
   // Load the logging plugin.
-  require('cantina-log');
+  app.require('cantina-log');
 
   // Load the rest of your plugins.
 
@@ -104,7 +104,7 @@ app.boot(function (err) {
 Data serialization
 ------------------
 
-You may find your self logging simliar kinds of application object, such as
+You may find yourself logging simliar kinds of application object, such as
 'user' models. You can log the raw user objects and implement a serializer to
 santize it for the logs.
 

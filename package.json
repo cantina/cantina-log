@@ -1,9 +1,6 @@
 {
   "name": "cantina-log",
   "version": "4.1.0",
-  "publishConfig": {
-    "registry": "https://npm-registry.terraeclipse.com"
-  },
   "description": "JSON logging for Cantina apps",
   "main": "cantina-log.js",
   "scripts": {
@@ -13,6 +10,12 @@
     "type": "git",
     "url": "git://github.com/cantina/cantina-log.git"
   },
+  "licenses": [
+    {
+      "type": "Apache-2.0",
+      "url": "http://www.apache.org/licenses/LICENSE-2.0.html"
+    }
+  ],
   "author": "Brian Link <cpsubrian@gmail.com>",
   "dependencies": {
     "jog": "~0.7.1",
