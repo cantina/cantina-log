@@ -22,12 +22,12 @@
     "jog-stdstore": "~0.0.2"
   },
   "peerDependencies": {
-    "cantina": "~4.1.0"
+    "cantina": "^4.1.0"
   },
   "devDependencies": {
     "mocha": "*",
     "supertest": "~0.7.1",
-    "cantina": "~4.1.0",
-    "cantina-web": "~4.1.0"
+    "cantina": "^4.1.0",
+    "cantina-web": "^4.1.0"
   }
 }
